@@ -1,19 +1,19 @@
 interface Hero {
 
-    val Name: String
-    var Lvl: Int
-    val Type: String
-    var HealthPoints: Int
+    val name: String
+    var lvl: Int
+    val type: String
+    var healthPoints: Int
 
     fun String.goAction(){
-        println("$Type $Name $Lvl LVL do:\n $this")
+        println("$type $name $lvl LVL do:\n $this")
     }
 
     fun printHp(){
-        println("Current HP: $HealthPoints")
+        println("Current HP: $healthPoints")
     }
 
-    fun sayGreeting() = "Hi, i am ${Type.toLowerCase()} $Name, my LVL is $Lvl".goAction()
+    fun sayGreeting() = "Hi, i am ${type.toLowerCase()} $name, my LVL is $lvl".goAction()
 
     fun useSkill()
 }

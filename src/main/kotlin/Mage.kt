@@ -3,41 +3,41 @@ enum class Spell(val manaCost: Int, val caption: String) {
 }
 
 class Mage(
-    override val Name: String,
-    override var Lvl: Int,
-    override var HealthPoints: Int = 100
+    override val name: String,
+    override var lvl: Int,
+    override var healthPoints: Int = 100
 ) : Hero {
-    override val Type: String = "Mage"
-    private var ManaPoints: Int = 100
-    private var CurrentSpell: Spell = Spell.Fire
+    override val type: String = "Mage"
+    private var manaPoints: Int = 100
+    private var currentSpell: Spell = Spell.Fire
         private set
     override fun useSkill() {
         castSpell()
-        "Attack with ${CurrentSpell.caption}".goAction()
-        println("Current mana points: $ManaPoints")
+        "Attack with ${currentSpell.caption}".goAction()
+        println("Current mana points: $manaPoints")
     }
 
     private fun castSpell(){
-        this.ManaPoints -= CurrentSpell.manaCost
+        this.manaPoints -= currentSpell.manaCost
     }
 
     fun regen(){
         "Regen...".goAction()
-        this.ManaPoints += 10
-        println("Current mana points: $ManaPoints")
+        this.manaPoints += 10
+        println("Current mana points: $manaPoints")
     }
 
     fun regen(h: Hero){
-        ("Regen HP for ${h.Type.toLowerCase()} ${h.Name}").goAction()
-        h.HealthPoints = if (h.HealthPoints < 100)  h.HealthPoints + 10 else 100
+        ("Regen HP for ${h.type.toLowerCase()} ${h.name}").goAction()
+        h.healthPoints = if (h.healthPoints < 100)  h.healthPoints + 10 else 100
     }
 
      fun switchSpell(){
-         CurrentSpell = if (CurrentSpell == Spell.Fire){
+         currentSpell = if (currentSpell == Spell.Fire){
              Spell.Wind
          } else {
              Spell.Fire
          }
-         "Spell changed to $CurrentSpell".goAction()
+         "Spell changed to $currentSpell".goAction()
     }
 }
