@@ -1,12 +1,17 @@
 class Thief(
     override val Name: String,
     override var Lvl: Int,
-    override var HealthPoints: Int = 100
+    override var HealthPoints: Int = 100,
+    private val Agility: Int = 10
 ) : Hero {
     override val Type: String = "Thief"
-
     override fun useSkill() {
-        "Tried to steal".goAction()
+        if (Agility > 25){
+            "Tried to steal...Successfully".goAction()
+        } else {
+            "Tried to steal...Unsuccessfully".goAction()
+        }
+
     }
 
     fun hide(){

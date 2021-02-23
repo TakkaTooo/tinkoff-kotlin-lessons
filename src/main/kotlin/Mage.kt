@@ -9,7 +9,7 @@ class Mage(
 ) : Hero {
     override val Type: String = "Mage"
     private var ManaPoints: Int = 100
-    var CurrentSpell: Spell = Spell.Fire
+    private var CurrentSpell: Spell = Spell.Fire
         private set
     override fun useSkill() {
         castSpell()
@@ -21,10 +21,15 @@ class Mage(
         this.ManaPoints -= CurrentSpell.manaCost
     }
 
-    fun regenManaPoints(){
-        println("Regen...")
+    fun regen(){
+        "Regen...".goAction()
         this.ManaPoints += 10
         println("Current mana points: $ManaPoints")
+    }
+
+    fun regen(h: Hero){
+        ("Regen HP for ${h.Type.toLowerCase()} ${h.Name}").goAction()
+        h.HealthPoints = if (h.HealthPoints < 100)  h.HealthPoints + 10 else 100
     }
 
      fun switchSpell(){
