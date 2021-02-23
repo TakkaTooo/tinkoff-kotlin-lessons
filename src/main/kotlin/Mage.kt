@@ -10,7 +10,6 @@ class Mage(
     override val type: String = "Mage"
     private var manaPoints: Int = 100
     private var currentSpell: Spell = Spell.Fire
-        private set
     override fun useSkill() {
         castSpell()
         "Attack with ${currentSpell.caption}".goAction()

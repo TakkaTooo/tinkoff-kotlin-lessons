@@ -25,6 +25,6 @@ fun main(){
     testThief.printHp()
     testMage.regen(testThief) // testThief regen by testMage
     testThief.printHp()
-    testMage.regen() // self regen
+    testMage.regen() // self regen by testMage
 
 }
