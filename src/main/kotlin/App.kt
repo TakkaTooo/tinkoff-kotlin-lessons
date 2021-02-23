@@ -23,7 +23,7 @@ fun main(){
         println("-----------------------")
     }
     testThief.printHp()
-    testMage.regen(testThief) / testThief regen by testMage
+    testMage.regen(testThief) // testThief regen by testMage
     testThief.printHp()
     testMage.regen() // self regen
 
