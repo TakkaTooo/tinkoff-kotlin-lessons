@@ -2,7 +2,7 @@
 fun main(){
     val testMage = Mage("Waldemar", 10)
     val testFighter = Fighter("Ludwig", 7, "Ahr!!!")
-    val testThief = Thief("Marcus", 5,healthPoints = 80, Agility = 14)
+    val testThief = Thief("Marcus", 5,healthPoints = 80, agility = 14)
     val heroes = listOf<Hero>(testMage, testFighter, testThief)
 
     // Demonstration of general functionality
