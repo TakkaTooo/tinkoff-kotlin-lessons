@@ -1,21 +1,34 @@
 /**
  * Class for any collections based on a MutableList
  */
-abstract class MyCollection<T> : Iterable<T> {
+abstract class MyCollection<T> {
 
     /**
      * Main list with collection elements
+     *
      */
-    protected val list: MutableList<T> = mutableListOf()
+    protected val list: MutableList<T?> = mutableListOf()
 
     /**
      * Returns the size of the collection
+     *
      */
-    private val size: Int
-        get() = this.list.size
+    var size: Int = 0
+        protected set
+
+    /**
+     * Property storing the index of the first element in the collection
+     *
+     */
+    protected var headIndex: Int = 0
+
+    init {
+        list.add(null)
+    }
 
     /**
      * Removes all elements from the collection
+     *
      */
     fun clear() = list.clear()
 
@@ -31,10 +44,4 @@ abstract class MyCollection<T> : Iterable<T> {
      */
     fun isNotEmpty(): Boolean = !isEmpty()
 
-    /**
-     * An iterator for sequential access to the elements of the collection
-     */
-    override fun iterator(): Iterator<T> {
-        return list.iterator()
-    }
 }

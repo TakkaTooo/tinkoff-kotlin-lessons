@@ -1,4 +1,5 @@
 fun main() {
+
     // Stack demonstration
     val stack = myStackOf<Int>()
     println(stack.isEmpty())
@@ -20,9 +21,6 @@ fun main() {
     newNewStack.push(0)
     println(newNewStack.pop())
     println(newNewStack.pop())
-    newNewStack.iterator().withIndex().forEach {
-        println("Item ${it.value} with index ${it.index}")
-    }
 
     // Queue demonstration
     val queue = myQueueOf<String>()
@@ -36,6 +34,8 @@ fun main() {
     } catch (e: Exception) {
         println(e.toString())
     }
+    queue.enqueue("First!!!")
+    println(queue.dequeue())
 
     val newQueue = MyQueue<String>()
     newQueue.enqueue("Test")
@@ -45,8 +45,4 @@ fun main() {
     newNewQueue.enqueue("Fourth")
     println(newNewQueue.dequeue())
     println(newNewQueue.dequeue())
-
-    newNewQueue.iterator().withIndex().forEach {
-        println("Item ${it.value} with index ${it.index}")
-    }
 }
