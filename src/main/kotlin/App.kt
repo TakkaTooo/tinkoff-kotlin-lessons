@@ -1,5 +1,4 @@
 fun main() {
-
     // Stack demonstration
     val stack = myStackOf<Int>()
     println(stack.isEmpty())

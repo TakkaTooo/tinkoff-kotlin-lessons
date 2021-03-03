@@ -17,11 +17,17 @@ class MyQueue<T> : MyCollection<T>() {
      *
      */
     fun enqueue(element: T) {
-        if (isNotEmpty()) {
+        if (isEmpty()) {
+            headIndex = 0
+            tailIndex = 0
+        } else {
             tailIndex++
         }
-        list.add(tailIndex, element)
-
+        if (tailIndex > list.size - 1) {
+            list.add(tailIndex, element)
+        } else {
+            list[tailIndex] = element
+        }
         size++
     }
 
