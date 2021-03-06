@@ -1,47 +1,27 @@
+import DBUtility.Companion.getSortedByManufacturer
+import DBUtility.Companion.getGroupedByYear
+import DBUtility.Companion.getQuantityOf
+
 fun main() {
-    // Stack demonstration
-    val stack = myStackOf<Int>()
-    println(stack.isEmpty())
-    stack.push(777)
-    stack.push(1)
-    println(stack.pop())
-    println(stack.safePop())
-    try {
-        println(stack.pop())
-    } catch (e: Exception) {
-        println(e.toString())
-    }
+    // Demonstration
+    println("All cars: ")
+    CarsDBO.getAllCars().forEach { println(it) }
+    println("Car by ID: ")
+    println(CarsDBO.getCarById(0))
+    println("Cars by manufacturer: ")
+    CarsDBO.getCarByManufacturer("Renault").forEach { println(it) }
 
-    val newStack = MyStack<Int>()
-    newStack.push(1)
-    println(newStack.pop())
+    println("All car trips: ")
+    CarTripsDBO.getAllCarTrips().forEach { println(it) }
+    println("Trips by car: ")
+    println(CarTripsDBO.getTripsByCarId(0))
 
-    val newNewStack = myStackOf<Int>(1, 2, 3)
-    newNewStack.push(0)
-    println(newNewStack.pop())
-    println(newNewStack.pop())
-
-    // Queue demonstration
-    val queue = myQueueOf<String>()
-    println(queue.isEmpty())
-    queue.enqueue("First")
-    queue.enqueue("Second")
-    println(queue.dequeue())
-    println(queue.safeDequeue())
-    try {
-        println(queue.dequeue())
-    } catch (e: Exception) {
-        println(e.toString())
-    }
-    queue.enqueue("First!!!")
-    println(queue.dequeue())
-
-    val newQueue = MyQueue<String>()
-    newQueue.enqueue("Test")
-    println(newQueue.dequeue())
-
-    val newNewQueue = myQueueOf<String>("First", "Second", "Third")
-    newNewQueue.enqueue("Fourth")
-    println(newNewQueue.dequeue())
-    println(newNewQueue.dequeue())
+    println("Car join CarTrips: ")
+    val cwt = DBUtility.getCarsWithTrips()
+    cwt.forEach { println(it) }
+    println("Car join CarTrips sorted descending by manufacturer: ")
+    cwt.getSortedByManufacturer(SortOrder.DESCENDING).forEach { println(it) }
+    println("Car join CarTrips grouped by year: ")
+    cwt.getGroupedByYear().forEach { println(it) }
+    println("The number of cars with more than 2 trips: ${cwt.getQuantityOf { it.trips?.size ?: 0 > 2 }}")
 }
