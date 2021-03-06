@@ -1,3 +1,7 @@
+package DBO
+
+import Entities.Car
+
 /**
  * Emulator of DBO for Cars
  */

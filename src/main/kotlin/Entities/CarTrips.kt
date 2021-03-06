@@ -1,3 +1,5 @@
+package Entities
+
 /**
  * A class describing the entity of trips made by [Car] entity
  * @property carId id of the car on which the trips were made

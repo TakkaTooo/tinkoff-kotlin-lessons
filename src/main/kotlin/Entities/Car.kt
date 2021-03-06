@@ -1,3 +1,5 @@
+package Entities
+
 /**
  * A class describing the entity of a car used, for example, in car sharing
  * @property id id of this car

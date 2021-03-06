@@ -1,7 +1,11 @@
+package DBO
+
+import Entities.CarTrips
+import Entities.Trip
 import java.time.LocalDateTime
 
 /**
- * Emulator of DBO for CarTrips
+ * Emulator of DBO for Entities.CarTrips
  */
 class CarTripsDBO {
     companion object {
@@ -50,12 +54,12 @@ class CarTripsDBO {
             )
 
         /**
-         * Return all CarTrips
+         * Return all Entities.CarTrips
          */
         fun getAllCarTrips(): List<CarTrips> = container
 
         /**
-         * Return CarTrips by carId
+         * Return Entities.CarTrips by carId
          * @param id id of the car on which the trips were made
          */
         fun getTripsByCarId(id: Int): CarTrips? = container.find { it.carId == id }

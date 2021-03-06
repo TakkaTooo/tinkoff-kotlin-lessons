@@ -1,3 +1,5 @@
+package Entities
+
 /**
  * The entity describing a car with a list of trips perfect on it.
  * Is a hybrid of [Car] and [CarTrips]
