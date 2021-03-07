@@ -2,7 +2,7 @@ import DBO.CarTripsDBO
 import DBO.CarsDBO
 import DBUtility.Companion.getSortedByManufacturer
 import DBUtility.Companion.getGroupedByYear
-import DBUtility.Companion.getQuantityOf
+import DBUtility.Companion.getQuantityBy
 
 fun main() {
     // Demonstration
@@ -25,5 +25,5 @@ fun main() {
     cwt.getSortedByManufacturer(SortOrder.DESCENDING).forEach { println(it) }
     println("Entities.Car join Entities.CarTrips grouped by year: ")
     cwt.getGroupedByYear().forEach { println(it) }
-    println("The number of cars with more than 2 trips: ${cwt.getQuantityOf { it.trips?.size ?: 0 > 2 }}")
+    println("The number of cars with more than 2 trips: ${cwt.getQuantityBy { it.trips?.size ?: 0 > 2 }}")
 }

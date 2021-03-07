@@ -18,7 +18,6 @@ class DBUtility {
             val carTrips = CarTripsDBO.getTripsByCarId(it.id)
             CarWithTrips(it.id, it.manufacturer, it.year, carTrips?.trips, carTrips?.isAvailable)
         }
-
         /**
          * Returns a list sorted ascending by manufacturer name
          */
@@ -44,11 +43,7 @@ class DBUtility {
         /**
          * Returns the number of items match the given [predicate]
          */
-        fun List<CarWithTrips>.getQuantityOf(predicate: (CarWithTrips) -> Boolean): Int {
-            if (isEmpty()) return 0
-            var quantity: Int = 0
-            for (element in this) if (predicate(element)) quantity++
-            return quantity
-        }
+        fun List<CarWithTrips>.getQuantityBy(predicate: (CarWithTrips) -> Boolean): Int  =
+            this.count(predicate)
     }
 }
