@@ -16,7 +16,8 @@ class DBUtility {
          */
         fun getCarsWithTrips(): List<CarWithTrips> = CarsDBO.getAllCars().map {
             val carTrips = CarTripsDBO.getTripsByCarId(it.id)
-            CarWithTrips(it.id, it.manufacturer, it.year, carTrips?.trips, carTrips?.isAvailable)
+            val trips = carTrips.asSequence().map { carTrips -> carTrips.trips }.flatten().toList()
+            CarWithTrips(it.id, it.manufacturer, it.year, trips)
         }
         /**
          * Returns a list sorted ascending by manufacturer name
@@ -28,11 +29,9 @@ class DBUtility {
          * Returns a list sorted by manufacturer name
          * @param sortOrder sort order
          */
-        fun List<CarWithTrips>.getSortedByManufacturer(sortOrder: SortOrder): List<CarWithTrips> {
-            val sortedList = this.sortedBy { it.manufacturer }
-            return if (sortOrder == SortOrder.DESCENDING) sortedList.reversed() else sortedList
+        fun List<CarWithTrips>.getSortedByManufacturer(sortOrder: SortOrder): List<CarWithTrips> =
+            if (sortOrder == SortOrder.DESCENDING) this.sortedByDescending { it.manufacturer } else this.sortedBy { it.manufacturer }
 
-        }
 
         /**
          * @return Map<Int, List<Entities.CarWithTrips>> list grouped by year of car production

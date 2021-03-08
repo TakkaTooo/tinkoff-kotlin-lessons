@@ -7,14 +7,10 @@ package Entities
  * @property manufacturer manufacturer manufacturer of this car
  * @property year year of manufacture of this machine
  * @property trips list of [Trip]s committed to cars with id = carId
- * @property isAvailable - true - Info available for output
- *                       - false - Info not available for output
- *                       (just for example)
  */
 data class CarWithTrips(
     val id: Int,
     val manufacturer: String,
     val year: Int,
-    val trips: List<Trip>?,
-    val isAvailable: Boolean?
+    val trips: List<Trip>,
 )
