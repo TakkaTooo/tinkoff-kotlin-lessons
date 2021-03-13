@@ -1,29 +1,75 @@
-import DBO.CarTripsDBO
-import DBO.CarsDBO
-import DBUtility.Companion.getSortedByManufacturer
-import DBUtility.Companion.getGroupedByYear
-import DBUtility.Companion.getQuantityBy
+import org.sqlite.SQLiteException
+import java.lang.StringBuilder
+import java.sql.*
 
 fun main() {
-    // Demonstration
-    println("All cars: ")
-    CarsDBO.getAllCars().forEach { println(it) }
-    println("Entities.Car by ID: ")
-    println(CarsDBO.getCarById(0))
-    println("Cars by manufacturer: ")
-    CarsDBO.getCarByManufacturer("Renault").forEach { println(it) }
+    // Init
+    val client = Client("src/main/resources/test.db")
+    val sb = StringBuilder()
 
-    println("All car trips: ")
-    CarTripsDBO.getAllCarTrips().forEach { println(it) }
-    println("Trips by car: ")
-    println(CarTripsDBO.getTripsByCarId(0))
+    try {
+        Initializer.createTables(client)
 
-    println("Entities.Car join Entities.CarTrips: ")
-    val cwt = DBUtility.getCarsWithTrips()
-    cwt.forEach { println(it) }
-    println("Entities.Car join Entities.CarTrips sorted descending by manufacturer: ")
-    cwt.getSortedByManufacturer(SortOrder.DESCENDING).forEach { println(it) }
-    println("Entities.Car join Entities.CarTrips grouped by year: ")
-    cwt.getGroupedByYear().forEach { println(it) }
-    println("The number of cars with more than 2 trips: ${cwt.getQuantityBy { it.trips?.size ?: 0 > 2 }}")
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    try {
+        Initializer.fillTables(client)
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    // Demo
+    try {
+        sb.append("Driver by id ${DataGetter.getDriverById(client, 3)}").append("\n")
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    try {
+        sb.append("Driver with all cars: ${DataGetter.getDriverWithAllCars(client, 4)}").append("\n")
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    try {
+        sb.append("Drivers by desc: ").append("\n")
+        DataGetter.getDriversSortedByName(client, SortOrder.DESCENDING).forEach {
+            sb.append(it).append("\n")
+        }
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    try {
+        sb.append("Cars with trips count > 1: ${DataGetter.getCarsWithTripsCountMoreThanOne(client)}").append("\n")
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    try {
+        sb.append("Trips with distance > 15: ${DataGetter.getTripsByDistanceMoreThan(client, 15)}").append("\n")
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    try {
+        sb.append("Drivers with trips and car info: ").append("\n")
+        DataGetter.getDriversWithTripsAndCarInfo(client).forEach {
+            sb.append(it).append("\n")
+        }
+    } catch (e: SQLException) {
+        sb.append(e.message).append("\n")
+    }
+
+    // Removing
+
+    try {
+        Initializer.deleteAllTables(client)
+    } catch (e: SQLiteException) {
+        sb.append(e.message).append("\n")
+    }
+
+    println(sb)
 }
