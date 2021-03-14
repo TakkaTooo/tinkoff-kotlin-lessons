@@ -76,4 +76,9 @@ class Client(private val url: String) {
         }
         return resultList
     }
+
+    /**
+     * Closes the database connection
+     */
+    fun close() = conn.close()
 }

@@ -66,10 +66,15 @@ fun main() {
     // Removing
 
     try {
-        Initializer.deleteAllTables(client)
-    } catch (e: SQLiteException) {
+        try {
+            Initializer.deleteAllTables(client)
+        } catch (e: SQLiteException) {
+            sb.append(e.message).append("\n")
+        }
+    } catch (e: SQLException) {
         sb.append(e.message).append("\n")
     }
+    client.close()
 
     println(sb)
 }
