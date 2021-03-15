@@ -1,4 +1,5 @@
-import java.io.Closeable
+package jdbc
+
 import java.sql.*
 
 /**
@@ -72,7 +73,7 @@ class Client(private val url: String) {
             }
         }
         if (resultList.isEmpty()) {
-            throw SQLException("No rows found in the database")
+            throw SQLException("jdbc.Client.executeQuery throw SQLException: Query returned zero rows")
         }
         return resultList
     }

@@ -1,4 +1,4 @@
-package models
+package model
 
 /**
  * Entity for JOIN tables Driver Car Trip.

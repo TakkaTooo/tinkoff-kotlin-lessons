@@ -1,4 +1,4 @@
-package models
+package model
 
 /**
  * Class describing the entity of the car sharing driver.

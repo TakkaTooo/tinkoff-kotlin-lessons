@@ -1,4 +1,4 @@
-package models
+package model
 
 /**
  * Entity for storing information about drivers and all vehicles they traveled on.

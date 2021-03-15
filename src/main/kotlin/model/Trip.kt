@@ -1,6 +1,4 @@
-package models
-
-import java.time.LocalDateTime
+package model
 
 /**
  * Entity describing the trip.

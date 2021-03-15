@@ -1,8 +1,18 @@
-import org.sqlite.SQLiteException
+package service
 
-class Initializer {
+import jdbc.Client
+import java.sql.SQLException
+
+class CarsharingInitializer {
 
     companion object {
+
+        /**
+         * Creates tables for carsharing service subject area.
+         * @param client class-client for working with database.
+         * @throws CarsharingServiceOperationFaultException in case if connection with db closed
+         * or any table already exists in db
+         */
         fun createTables(client: Client) {
             val sql = """
                 CREATE TABLE Car(
@@ -30,9 +40,23 @@ class Initializer {
                     FOREIGN KEY (driverId) REFERENCES Driver(id)
                 );
             """.trimIndent()
-            client.executeUpdate(sql)
+
+            try {
+                client.executeUpdate(sql)
+            } catch (e: SQLException) {
+                throw CarsharingServiceOperationFaultException(when (e.errorCode) {
+                    0 -> CarsharingServiceErrorCode.CONNECTION_CLOSED
+                    else -> CarsharingServiceErrorCode.TABLE_ALREADY_EXISTS
+                })
+            }
         }
 
+        /**
+         * Fills tables for carsharing service subject area.
+         * @param client class-client for working with database.
+         * @throws CarsharingServiceOperationFaultException in case if connection with db closed
+         * or any constraint of table failed.
+         */
         fun fillTables(client: Client) {
             val sql = """
                 INSERT INTO Car (manufacturer, year) 
@@ -73,18 +97,15 @@ class Initializer {
                     (4, 4),
                     (4, 5);
             """.trimIndent()
-            client.executeUpdate(sql)
-        }
+            try {
+                client.executeUpdate(sql)
+            } catch (e: SQLException) {
+                throw CarsharingServiceOperationFaultException(when (e.errorCode) {
+                    0 -> CarsharingServiceErrorCode.CONNECTION_CLOSED
+                    else -> CarsharingServiceErrorCode.CONSTRAINT_FAILED
+                })
+            }
 
-        @Throws(SQLiteException::class)
-        fun deleteAllTables(client: Client) {
-            val sql = """
-                DROP TABLE Trip;
-                DROP TABLE DriversCars;
-                DROP TABLE Car;
-                DROP TABLE Driver;
-            """.trimIndent()
-            client.executeUpdate(sql)
         }
     }
 }

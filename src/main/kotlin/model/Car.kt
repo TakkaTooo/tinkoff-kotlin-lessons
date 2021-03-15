@@ -1,4 +1,4 @@
-package models
+package model
 
 /**
  * A class describing the entity of a car used, for example, in car sharing.
