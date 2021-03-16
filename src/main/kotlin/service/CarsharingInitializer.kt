@@ -13,6 +13,7 @@ class CarsharingInitializer {
          * @throws CarsharingServiceOperationFaultException in case if connection with db closed
          * or any table already exists in db
          */
+        @Throws(CarsharingServiceOperationFaultException::class)
         fun createTables(client: Client) {
             val sql = """
                 CREATE TABLE Car(
@@ -44,10 +45,8 @@ class CarsharingInitializer {
             try {
                 client.executeUpdate(sql)
             } catch (e: SQLException) {
-                throw CarsharingServiceOperationFaultException(when (e.errorCode) {
-                    0 -> CarsharingServiceErrorCode.CONNECTION_CLOSED
-                    else -> CarsharingServiceErrorCode.TABLE_ALREADY_EXISTS
-                })
+                throw CarsharingServiceOperationFaultException(
+                    CarsharingServiceErrorCode.getInstanceByCode(e.errorCode))
             }
         }
 
@@ -57,6 +56,7 @@ class CarsharingInitializer {
          * @throws CarsharingServiceOperationFaultException in case if connection with db closed
          * or any constraint of table failed.
          */
+        @Throws(CarsharingServiceOperationFaultException::class)
         fun fillTables(client: Client) {
             val sql = """
                 INSERT INTO Car (manufacturer, year) 
@@ -100,10 +100,8 @@ class CarsharingInitializer {
             try {
                 client.executeUpdate(sql)
             } catch (e: SQLException) {
-                throw CarsharingServiceOperationFaultException(when (e.errorCode) {
-                    0 -> CarsharingServiceErrorCode.CONNECTION_CLOSED
-                    else -> CarsharingServiceErrorCode.CONSTRAINT_FAILED
-                })
+                throw CarsharingServiceOperationFaultException(
+                    CarsharingServiceErrorCode.getInstanceByCode(e.errorCode))
             }
 
         }
