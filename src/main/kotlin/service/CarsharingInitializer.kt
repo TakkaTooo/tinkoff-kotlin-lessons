@@ -14,7 +14,7 @@ class CarsharingInitializer {
          * or any table already exists in db
          */
         @Throws(CarsharingServiceOperationFaultException::class)
-        fun createTables(client: Client) {
+        fun createAllTables(client: Client) {
             val sql = """
                 CREATE TABLE Car(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,6 +45,7 @@ class CarsharingInitializer {
             try {
                 client.executeUpdate(sql)
             } catch (e: SQLException) {
+                println("createAllTables: exception on creating all tables")
                 throw CarsharingServiceOperationFaultException(
                     CarsharingServiceErrorCode.getInstanceByCode(e.errorCode))
             }
@@ -57,7 +58,7 @@ class CarsharingInitializer {
          * or any constraint of table failed.
          */
         @Throws(CarsharingServiceOperationFaultException::class)
-        fun fillTables(client: Client) {
+        fun fillAllTables(client: Client) {
             val sql = """
                 INSERT INTO Car (manufacturer, year) 
                 VALUES
@@ -100,6 +101,7 @@ class CarsharingInitializer {
             try {
                 client.executeUpdate(sql)
             } catch (e: SQLException) {
+                println("createAllTables: exception on filling all tables")
                 throw CarsharingServiceOperationFaultException(
                     CarsharingServiceErrorCode.getInstanceByCode(e.errorCode))
             }

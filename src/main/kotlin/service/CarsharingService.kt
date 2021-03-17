@@ -17,7 +17,8 @@ class DataGetter {
          * @param client class-client for working with database.
          * @param id identifier of [Driver] for get from database.
          */
-        fun safeGetDriverById(client: Client, id: Int): Driver? {
+        @Throws(SQLException::class)
+        fun getDriverById(client: Client, id: Int): Driver? {
             val sql = """
             SELECT *
              FROM Driver
@@ -29,20 +30,10 @@ class DataGetter {
                     result.first()["name"] as String,
                     result.first()["drivingLicence"] as String)
             } catch (e: SQLException) {
-                null
+                println("getDriverById: exception on getting user with id=${id}")
+                throw SQLException("CarsharingDataGetter.getDriverById throw SQLException: Query returned zero rows")
             }
         }
-
-        /**
-         * Returns the [Driver] instance by id from the database.
-         * @param client class-client for working with database.
-         * @param id identifier of [Driver] for get from database.
-         * @throws SQLException in case if query returned zero rows.
-         */
-        @Throws(SQLException::class)
-        fun getDriverById(client: Client, id: Int): Driver = safeGetDriverById(client, id)
-            ?: throw SQLException("CarsharingDataGetter.getDriverById throw SQLException: Query returned zero rows")
-
 
         /**
          * Returns List with [Trip]s instances with distance more than distance-arg
@@ -50,7 +41,8 @@ class DataGetter {
          * @param client class-client for working with database.
          * @param distance distance for compare.
          */
-        fun safeGetTripsByDistanceMoreThan(client: Client, distance: Int): List<Trip> {
+        @Throws(SQLException::class)
+        fun getTripsByDistanceMoreThan(client: Client, distance: Int): List<Trip> {
             val sql = """
                 SELECT *
                  FROM Trip
@@ -62,23 +54,9 @@ class DataGetter {
                     Trip(it["id"] as Int, it["carId"] as Int, it["driverId"] as Int, it["distance"] as Int)
                 }
             } catch (e: SQLException) {
-                emptyList()
+                println("getTripsByDistanceMoreThan: exception on getting trips with distance>${distance}")
+                throw SQLException("CarsharingDataGetter.getTripsByDistanceMoreThan throw SQLException: Query returned zero rows")
             }
-        }
-
-        /**
-         * Returns List with [Trip]s instances with distance more than distance-arg.
-         * @param client class-client for working with database.
-         * @param distance distance for compare.
-         * @throws SQLException in case if query returned zero rows.
-         */
-        @Throws(SQLException::class)
-        fun getTripsByDistanceMoreThan(client: Client, distance: Int): List<Trip> {
-            val result = safeGetTripsByDistanceMoreThan(client, distance)
-            if (result.isNotEmpty()) {
-                return result
-            }
-            throw SQLException("CarsharingDataGetter.getTripsByDistanceMoreThan throw SQLException: Query returned zero rows")
         }
 
         /**
@@ -86,7 +64,8 @@ class DataGetter {
          * (empty list if query returned zero rows).
          * @param client class-client for working with database.
          */
-        fun safeGetDriversWithTripsAndCarInfo(client: Client): List<DriverWithTripAndCar> {
+        @Throws(SQLException::class)
+        fun getDriversWithTripsAndCarInfo(client: Client): List<DriverWithTripAndCar> {
             val sql = """
                 SELECT Driver.id as id, name, Trip.id as tripId, manufacturer, distance 
                  FROM (Driver JOIN Trip on Driver.id = driverId) JOIN Car on Car.id = carId
@@ -102,22 +81,10 @@ class DataGetter {
                         it["distance"] as Int)
                 }
             } catch (e: SQLException) {
-                emptyList()
+                println("getDriversWithTripsAndCarInfo: exception on getting user with trips and car info")
+                throw SQLException(
+                    "CarsharingDataGetter.getDriversWithTripsAndCarInfo throw SQLException: Query returned zero rows")
             }
-        }
-
-        /**
-         * Returns instances that are the result of the join of three tables.
-         * @param client class-client for working with database.
-         * @throws SQLException in case if query returned zero rows.
-         */
-        @Throws(SQLException::class)
-        fun getDriversWithTripsAndCarInfo(client: Client): List<DriverWithTripAndCar> {
-            val result = safeGetDriversWithTripsAndCarInfo(client)
-            if (result.isNotEmpty()) {
-                return result
-            }
-            throw SQLException("CarsharingDataGetter.getDriversWithTripsAndCarInfo throw SQLException: Query returned zero rows")
         }
 
         /**
@@ -125,7 +92,8 @@ class DataGetter {
          * (empty list if query returned zero rows).
          * @param client class-client for working with database.
          */
-        fun safeGetCarsWithTripsCountMoreThanOne(client: Client): List<Car> {
+        @Throws(SQLException::class)
+        fun getCarsWithTripsCountMoreThanOne(client: Client): List<Car> {
             val sql = """
                 SELECT Car.id, manufacturer, year
                  FROM Car JOIN Trip on Car.id = carId
@@ -138,23 +106,11 @@ class DataGetter {
                     Car(it["id"] as Int, it["manufacturer"] as String, it["year"] as Int)
                 }
             } catch (e: SQLException) {
-                emptyList()
+                println("getCarsWithTripsCountMoreThanOne: exception on getting cars with trips count (not found in db)")
+                throw SQLException(
+                    "CarsharingDataGetter.getCarsWithTripsCountMoreThanOne throw SQLException: Query returned zero rows")
             }
 
-        }
-
-        /**
-         * Returns cars with more than 1 trips.
-         * @param client class-client for working with database.
-         * @throws SQLException in case if query returned zero rows.
-         */
-        @Throws(SQLException::class)
-        fun getCarsWithTripsCountMoreThanOne(client: Client): List<Car> {
-            val result = safeGetCarsWithTripsCountMoreThanOne(client)
-            if (result.isNotEmpty()) {
-                return result
-            }
-            throw SQLException("CarsharingDataGetter.getCarsWithTripsCountMoreThanOne throw SQLException: Query returned zero rows")
         }
 
         /**
@@ -166,7 +122,8 @@ class DataGetter {
          *  @param client class-client for working with database.
          *  @param id identifier of [Driver] for get from database.
          */
-        fun safeGetDriverWithAllCars(client: Client, id: Int): DriverWithAllCars? {
+        @Throws(SQLException::class)
+        fun getDriverWithAllCars(client: Client, id: Int): DriverWithAllCars? {
             val sql = """ 
                 SELECT id, name, drivingLicence, carId
                  FROM Driver LEFT JOIN DriversCars on id = driverId 
@@ -183,30 +140,20 @@ class DataGetter {
                     }
                 )
             } catch (e: SQLException) {
-                null
+                println("getDriverWithAllCars: exception on getting user with id=${id} with all his cars (not found in db)")
+                throw SQLException(
+                    "CarsharingDataGetter.getCarsWithTripsCountMoreThanOne throw SQLException: Query returned zero rows")
             }
         }
-
-        /**
-         * !!! FOR DEMONSTRATION many-to-many !!!
-         * Returns the [DriverWithAllCars] entity
-         * (information about the driver
-         *  and a list of id of the cars on which he traveled).
-         *  @param client class-client for working with database.
-         *  @param id identifier of [Driver] for get from database.
-         *  @throws SQLException in case if query returned zero rows.
-         */
-        @Throws(SQLException::class)
-        fun getDriverWithAllCars(client: Client, id: Int): DriverWithAllCars = safeGetDriverWithAllCars(client, id)
-            ?: throw SQLException("CarsharingDataGetter.getDriverWithAllCars throw SQLException: Query returned zero rows")
 
         /**
          * Returns a list of all [Driver]s sorted by name by ascending.
          * @param client class-client for working with database.
          * (empty list if query returned zero rows).
          */
-        fun safeGetDriversSortedByName(client: Client): List<Driver> =
-            safeGetDriversSortedByName(client, SortOrder.ASCENDING)
+        @Throws(SQLException::class)
+        fun getDriversSortedByName(client: Client): List<Driver> =
+            getDriversSortedByName(client, SortOrder.ASCENDING)
 
         /**
          * Returns a list of all [Driver]s sorted by name by [sortOrder]
@@ -214,7 +161,8 @@ class DataGetter {
          * @param client class-client for working with database.
          * @param sortOrder order of sorting.
          */
-        fun safeGetDriversSortedByName(client: Client, sortOrder: SortOrder): List<Driver> {
+        @Throws(SQLException::class)
+        fun getDriversSortedByName(client: Client, sortOrder: SortOrder): List<Driver> {
             val sql = """
                 SElECT *
                  FROM Driver
@@ -230,32 +178,11 @@ class DataGetter {
                     )
                 }
             } catch (e: SQLException) {
-                emptyList()
+                println("getDriversSortedByName: exception on getting drivers by ${sortOrder.sql} sort order} (not found in db)")
+                throw SQLException(
+                    "CarsharingDataGetter.getCarsWithTripsCountMoreThanOne throw SQLException: Query returned zero rows")
             }
         }
-
-        /**
-         * Returns a list of all [Driver]s sorted by name by [sortOrder]
-         * @param client class-client for working with database.
-         * @param sortOrder order of sorting.
-         * @throws SQLException in case if query returned zero rows.
-         */
-        @Throws(SQLException::class)
-        fun getDriversSortedByName(client: Client, sortOrder: SortOrder): List<Driver> {
-            val result = safeGetDriversSortedByName(client, sortOrder)
-            if (result.isNotEmpty()) {
-                return result
-            }
-            throw SQLException("CarsharingDataGetter.getDriversSortedByName throw SQLException: Query returned zero rows")
-        }
-
-        /**
-         * Returns a list of all [Driver]s sorted by name by ascending.
-         * @param client class-client for working with database.
-         * @throws SQLException in case if query returned zero rows.
-         */
-        @Throws(SQLException::class)
-        fun getDriversSortedByName(client: Client): List<Driver> = getDriversSortedByName(client, SortOrder.ASCENDING)
     }
 }
 

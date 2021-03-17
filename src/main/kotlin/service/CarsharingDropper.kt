@@ -11,6 +11,7 @@ class CarsharingDropper {
          * for Table already exists and Table not exists
          */
         private const val errorCodeOffset = 1
+
         /**
          * Drops tables for carsharing service subject area.
          * @param client class-client for working with database.
@@ -18,7 +19,7 @@ class CarsharingDropper {
          * or any table not exist in db
          */
         @Throws(CarsharingServiceOperationFaultException::class)
-        fun deleteAllTables(client: Client) {
+        fun dropAllTables(client: Client) {
             val sql = """
                 DROP TABLE Trip;
                 DROP TABLE DriversCars;
@@ -28,6 +29,7 @@ class CarsharingDropper {
             try {
                 client.executeUpdate(sql)
             } catch (e: SQLException) {
+                println("dropAllTable: exception on dropping all tables")
                 throw CarsharingServiceOperationFaultException(
                     CarsharingServiceErrorCode.getInstanceByCode(e.errorCode + errorCodeOffset))
             }

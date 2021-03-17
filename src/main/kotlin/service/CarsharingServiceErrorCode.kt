@@ -5,6 +5,7 @@ enum class CarsharingServiceErrorCode(val code: Int, val message: String) {
     TABLE_ALREADY_EXISTS(1, "Table already exists"),
     CONSTRAINT_FAILED(19, "Constraint failed"),
     TABLE_NOT_EXISTS(2, "Such table not exists");
+
     companion object {
         /**
          * Returns CarsharingServiceErrorCode "instance" by code
