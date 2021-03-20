@@ -12,13 +12,19 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test-junit"))
-    implementation("org.jetbrains.kotlin", "kotlin-jdbc", "0.12.213")
-    implementation("org.xerial","sqlite-jdbc", "3.34.0")
+    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
+    testImplementation(kotlin("stdlib"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
+
+    testImplementation("io.mockk:mockk:1.10.6")
 }
 
-tasks.test {
-    useJUnit()
+tasks {
+    test {
+        useJUnitPlatform()
+    }
 }
 
 tasks.withType<KotlinCompile>() {

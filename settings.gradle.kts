@@ -1,3 +1,3 @@
 
-rootProject.name = "lesson5"
+rootProject.name = "lesson6"
 
