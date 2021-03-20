@@ -10,47 +10,40 @@ fun main() {
 
     with(sb) {
 
-        // Demo
-        try {
+        runCatching {
             // Init
-            try {
-                CarsharingInitializer.createAllTables(client)
-                CarsharingInitializer.fillAllTables(client)
+            CarsharingInitializer.createAllTables(client)
+            CarsharingInitializer.fillAllTables(client)
 
-            } catch (e: CarsharingServiceOperationFaultException) {
-            }
             // Demo
-            append("Driver by id: ${DataGetter.getDriverById(client, 3)}").append("\n")
+            append("Driver by id: ${CarsharingService.getDriverById(client, 3)}").append("\n")
 
-            append("Driver with all cars: ${DataGetter.getDriverWithAllCars(client, 6)}").append("\n")
+            append("Driver with all cars: ${CarsharingService.getDriverWithAllCars(client, 6)}").append("\n")
 
             append("Drivers by desc: ").append("\n")
-            DataGetter.getDriversSortedByName(client, SortOrder.DESCENDING).forEach {
+            CarsharingService.getDriversSortedByName(client, SortOrder.DESCENDING).forEach {
                 append(it).append("\n")
             }
 
-            append("Cars with trips count > 1: ${DataGetter.getCarsWithTripsCountMoreThanOne(client)}").append("\n")
+            append("Cars with trips count > 1: ${CarsharingService.getCarsWithTripsCountMoreThanOne(client)}").append("\n")
 
-            append("Trips with distance > 30: ${DataGetter.getTripsByDistanceMoreThan(client, 30)}").append("\n")
-            append("Trips with distance > 15: ${DataGetter.getTripsByDistanceMoreThan(client, 15)}").append("\n")
+            append("Trips with distance > 30: ${CarsharingService.getTripsByDistanceMoreThan(client, 30)}").append("\n")
+
+            append("Trips with distance > 15: ${CarsharingService.getTripsByDistanceMoreThan(client, 15)}").append("\n")
 
             append("Drivers with trips and car info: ").append("\n")
-            DataGetter.getDriversWithTripsAndCarInfo(client).forEach {
+            CarsharingService.getDriversWithTripsAndCarInfo(client).forEach {
                 append(it).append("\n")
             }
-        } catch (e: SQLException) {
-
-        } finally {
-            // Removing
-            try {
+        }.let {
+            println(this)
+            runCatching {
+                println("Deleting tables...")
                 CarsharingDropper.dropAllTables(client)
-            } catch (e: CarsharingServiceOperationFaultException) {
-            } finally {
+            }.let {
+                println("Close connection...")
                 client.close()
             }
-
         }
     }
-
-    println(sb)
 }

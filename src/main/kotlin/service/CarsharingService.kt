@@ -9,7 +9,7 @@ enum class SortOrder(val sql: String) {
     DESCENDING("DESC");
 }
 
-class DataGetter {
+class CarsharingService {
     companion object {
 
         /**
