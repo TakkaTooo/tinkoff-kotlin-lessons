@@ -5,6 +5,7 @@ import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -42,7 +43,7 @@ class DAOTest {
         val result = dao.getById(6)
 
         assertEquals(6, slot.captured)
-        assertEquals(null, result)
+        assertNull(result)
         verify { dao.getById(6) }
     }
 
@@ -54,7 +55,7 @@ class DAOTest {
         val result = dao.getById(-1)
 
         assertEquals(-1, slot.captured)
-        assertEquals(null, result)
+        assertNull(result)
         verify { dao.getById(-1) }
     }
 
