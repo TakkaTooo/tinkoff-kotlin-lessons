@@ -1,13 +1,14 @@
 import kotlin.math.pow
 
 class Display {
-    var id: Int? = null
-    var diagonal: Double? = null
-    var width: Int? = null
-    var height: Int? = null
+    var id: Int = 0
+    var diagonal: MyDouble = MyDouble(0.0)
+    var width: Int = 0
+    var height: Int = 0
 
     fun getPPI(): Double =
-        (width!!.toDouble().pow(2.0) + height!!.toDouble().pow(2.0)).getSqrt() / diagonal!!
+        diagonal.getOperationResult(1 / (width.toDouble().pow(2) + height.toDouble().pow(2)).getSqrt(),
+            Operation.MULTIPLICATION)
 
     fun drawPoint(x: Int, y: Int): String =
         "Point was drawn on the coordinates ($x, $y)"

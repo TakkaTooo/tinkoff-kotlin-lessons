@@ -16,10 +16,10 @@ class DAOTest {
     private val slot = slot<Int>()
 
     @Test
-    fun `getById dao func test with returning instance`() {
+    fun `getById dao func test with returning instance of Display`() {
         val display = display {
             this.id = 2
-            diagonal = 21.5
+            diagonal = MyDouble(21.5)
             width = 1920
             height = 1080
         }
@@ -36,7 +36,7 @@ class DAOTest {
     }
 
     @Test
-    fun `geyById dao func first test with returning null`() {
+    fun `geyById dao func first test with returning null, because does not exists user with id = 6`() {
         dao = mockk {
             every { getById(capture(slot)) } returns null
         }
@@ -48,7 +48,7 @@ class DAOTest {
     }
 
     @Test
-    fun `geyById dao func second test with returning null`() {
+    fun `geyById dao func second test with returning null because does not exists user with id = -1`() {
         dao = mockk {
             every { getById(capture(slot)) } returns null
         }
@@ -60,17 +60,17 @@ class DAOTest {
     }
 
     @Test
-    fun `getAll dao func test`() {
+    fun `getAll dao func test with returning all displays from emulated db`() {
         val displays = listOf(
             display {
                 id = 1
-                diagonal = 27.0
+                diagonal = MyDouble(27.0)
                 width = 2560
                 height = 1440
             },
             display {
                 id = 2
-                diagonal = 24.0
+                diagonal = MyDouble(24.0)
                 width = 1920
                 height = 1080
             })

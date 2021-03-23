@@ -17,7 +17,7 @@ class DisplayTest {
         val slotB = slot<Int>()
         val display = mockk<Display> {
             every { id } returns 1
-            every { diagonal } returns 24.0
+            every { diagonal } returns MyDouble(24.0)
             every { width } returns 2560
             every { height } returns 1440
             every { getPPI() } returns 122.0
@@ -33,7 +33,7 @@ class DisplayTest {
                 { assertEquals(1, id) },
                 { assertEquals(128, slotA.captured) },
                 { assertEquals(256, slotB.captured) },
-                { assertEquals(24.0, diagonal) },
+                { assertEquals(24.0, diagonal.value) },
                 { assertEquals(2560, width) },
                 { assertEquals(1440, height) },
                 { assertEquals(ppiResult, getPPI()) },

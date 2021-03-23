@@ -14,7 +14,7 @@ enum class Operation(val func: (Double, Double) -> Double) {
     })
 }
 
-class MyDouble(private val value: Double) {
+class MyDouble(val value: Double) {
     fun getByPredicate(predicate: (Double) -> Boolean): Boolean = predicate(value)
 
     fun getOperationResult(operand: Double, operation: Operation): Double =
