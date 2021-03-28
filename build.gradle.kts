@@ -12,19 +12,11 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
-    testImplementation(kotlin("stdlib"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
-
-    testImplementation("io.mockk:mockk:1.10.6")
+    testImplementation(kotlin("test-junit"))
 }
 
-tasks {
-    test {
-        useJUnitPlatform()
-    }
+tasks.test {
+    useJUnit()
 }
 
 tasks.withType<KotlinCompile>() {
