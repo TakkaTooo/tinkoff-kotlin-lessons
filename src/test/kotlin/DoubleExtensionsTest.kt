@@ -8,12 +8,14 @@ class DoubleExtensionsTest {
     @Test
     fun `getSqrt extension Double function test, extracting the root of 16 = 4`() {
         val result = 16.0.getSqrt()
+
         assertEquals(4.0, result)
     }
 
     @Test
     fun `getSqrt extension Double function test, extracting the root of 25 = 5`() {
         val result = 25.0.getSqrt()
+
         assertEquals(5.0, result)
     }
 
@@ -29,6 +31,7 @@ class DoubleExtensionsTest {
         val msg = assertThrows<ArithmeticException> {
             (-1337.0).getSqrt()
         }.message
+
         assertEquals("Can't extract square root of negative number", msg)
     }
 }

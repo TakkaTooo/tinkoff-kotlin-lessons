@@ -14,9 +14,8 @@ class Display {
         "Point was drawn on the coordinates ($x, $y)"
 
     override fun toString(): String {
-        return "${diagonal.toString()}: ${width.toString()}x${height.toString()}"
+        return "$diagonal: ${width}x$height"
     }
 }
 
 fun display(block: Display.() -> Unit): Display = Display().apply(block)
-

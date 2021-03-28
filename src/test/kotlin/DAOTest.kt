@@ -12,51 +12,41 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 class DAOTest {
     @MockK
-    lateinit var dao: DAO
-    private val slot = slot<Int>()
+    private lateinit var dao: DAO
+
+    private val slotId = slot<Int>()
+
+    private val display = display {
+        this.id = 2
+        diagonal = MyDouble(21.5)
+        width = 1920
+        height = 1080
+    }
 
     @Test
     fun `getById dao func test with returning instance of Display`() {
-        val display = display {
-            this.id = 2
-            diagonal = MyDouble(21.5)
-            width = 1920
-            height = 1080
-        }
         dao = mockk {
-            every { getById(capture(slot)) } returns display
+            every { getById(capture(slotId)) } returns display
         }
 
         val result = dao.getById(2)
 
-        assertEquals(2, slot.captured)
+        assertEquals(2, slotId.captured)
         assertEquals(display, result)
         verify { dao.getById(2) }
-
     }
 
     @Test
     fun `geyById dao func first test with returning null, because does not exists user with id = 6`() {
         dao = mockk {
-            every { getById(capture(slot)) } returns null
+            every { getById(or(more(5), less(1))) } returns null
+            every { getById(range(1, 5)) } returns display
         }
+
         val result = dao.getById(6)
 
-        assertEquals(6, slot.captured)
         assertNull(result)
         verify { dao.getById(6) }
-    }
-
-    @Test
-    fun `geyById dao func second test with returning null because does not exists user with id = -1`() {
-        dao = mockk {
-            every { getById(capture(slot)) } returns null
-        }
-        val result = dao.getById(-1)
-
-        assertEquals(-1, slot.captured)
-        assertNull(result)
-        verify { dao.getById(-1) }
     }
 
     @Test
@@ -77,6 +67,7 @@ class DAOTest {
         dao = mockk {
             every { getAll() } returns displays
         }
+
         val result = dao.getAll()
 
         assertEquals(displays, result)
