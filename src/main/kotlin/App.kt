@@ -6,7 +6,7 @@ fun main() = runBlocking {
     println(DriverInfoService.getInfoAboutDriverAndCars(1))
 
     val linkingChannel = Channel<String>()
-    val tripLogGenerator = TripLogGenerator(3, linkingChannel)
+    val tripLogGenerator = TripLogGenerator(3, linkingChannel, 5000)
     val tripLogReceiver = TripLogReceiver(linkingChannel)
 
     val tripLoggerJob = launch {

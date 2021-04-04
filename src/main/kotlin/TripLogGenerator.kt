@@ -9,7 +9,7 @@ import kotlin.random.Random
 /**
  *
  */
-class TripLogGenerator(private val carId: Int, var channel: Channel<String>) {
+class TripLogGenerator(private val carId: Int, var channel: Channel<String>, var delayTime: Long) {
 
     suspend fun generateTripLog() {
         val car = CarDAO.getCarById(carId)
@@ -17,7 +17,7 @@ class TripLogGenerator(private val carId: Int, var channel: Channel<String>) {
             channel.send("Driver with id = ${car?.driverId} made the trip on car ${car?.manufacturer} at a distance of ${
                 Random.nextInt(1, 20)
             } km.")
-            delay(1000L)
+            delay(delayTime)
         }
 
     }
