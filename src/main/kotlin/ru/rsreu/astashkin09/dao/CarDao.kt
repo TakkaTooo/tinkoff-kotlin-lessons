@@ -5,8 +5,8 @@ import ru.rsreu.astashkin09.model.Car
 class CarDao {
     companion object {
         private val container = listOf(
-            Car(1, "Renault", 2020),
-            Car(2, "Hyundai", 2015)
+            Car(0, "Renault", 2020),
+            Car(1, "Hyundai", 2015)
         )
 
         fun getCars(): List<Car> = container
