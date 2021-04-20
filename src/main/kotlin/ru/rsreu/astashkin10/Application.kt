@@ -14,6 +14,8 @@ import ru.rsreu.astashkin10.car.carComponents
 import ru.rsreu.astashkin10.car.carModule
 import ru.rsreu.astashkin10.plugins.configureExceptions
 import ru.rsreu.astashkin10.plugins.configureSerialization
+import ru.rsreu.astashkin10.trip.tripComponents
+import ru.rsreu.astashkin10.trip.tripModule
 
 fun main() {
     val config = ConfigFactory.load().extract<AppConfig>()
@@ -23,10 +25,12 @@ fun main() {
         di {
             coreComponents(config)
             carComponents()
+            tripComponents()
         }
         configureSerialization()
         configureExceptions()
         carModule()
+        tripModule()
     }
     engine.start()
 

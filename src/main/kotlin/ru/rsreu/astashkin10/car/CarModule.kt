@@ -12,11 +12,8 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 import org.kodein.di.singleton
-
-
-private fun getIdFromCall(call: ApplicationCall) = call.parameters["id"]?.toInt() ?: -1
-
-private fun generateErrorMessage(call: ApplicationCall) = "Car with id = ${getIdFromCall(call)} not found."
+import ru.rsreu.astashkin10.util.ErrorMessageGenerator
+import ru.rsreu.astashkin10.util.IdFromCallGetter
 
 fun Application.carModule() {
     val service: CarService by closestDI().instance()
@@ -31,29 +28,31 @@ fun Application.carModule() {
                 call.respond(service.create(request.manufacturer, request.year))
             }
             patch {
-                runCatching {
-                    val request = call.receive<UpdateCarRequest>()
-                    call.respond(service.update(request.id, request.manufacturer, request.year))
-                }.onFailure {
-                    it.printStackTrace()
-                    throw NotFoundException(generateErrorMessage(call))
+                val request = call.receive<UpdateCarRequest>()
+                val rowCount = service.update(request.id, request.manufacturer, request.year)
+                if (rowCount != 0) {
+                    call.respond(rowCount)
+                } else {
+                    throw NotFoundException(ErrorMessageGenerator.generateErrorMessage("Car", request.id))
                 }
             }
         }
         route("/cars/{id}") {
             get {
+                val id = IdFromCallGetter.getIdFromCall(call)
                 runCatching {
-                    call.respond(service.findById(getIdFromCall(call)))
+                    call.respond(service.findById(id))
                 }.onFailure {
-                    throw NotFoundException(generateErrorMessage(call))
+                    throw NotFoundException(ErrorMessageGenerator.generateErrorMessage("Car", id))
                 }
             }
 
             delete {
+                val id = IdFromCallGetter.getIdFromCall(call)
                 runCatching {
-                    call.respond(service.delete(getIdFromCall(call)))
+                    call.respond(service.delete(id))
                 }.onFailure {
-                    throw NotFoundException(generateErrorMessage(call))
+                    throw NotFoundException(ErrorMessageGenerator.generateErrorMessage("Car", id))
                 }
             }
         }
