@@ -60,9 +60,10 @@ fun Application.tripModule() {
                     carService.findById(request.carId)
                 }.onSuccess {
                     val id = IdFromCallGetter.getIdFromCall(call)
-                    runCatching {
-                        call.respond(service.changeCar(id, request.carId))
-                    }.onFailure {
+                    val rowCount = service.changeCar(id, request.carId)
+                    if (rowCount != 0) {
+                        call.respond(rowCount)
+                    } else {
                         throw NotFoundException(ErrorMessageGenerator.generateErrorMessage("Trip", id))
                     }
                 }.onFailure {
