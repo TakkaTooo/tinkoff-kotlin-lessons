@@ -1,0 +1,58 @@
+version: '3.1'
+
+services:
+  trip-rest-api:
+    container_name: trip-rest-api
+    image: trip-rest:1.0
+    restart: always
+    depends_on:
+      - car-rest-api
+      - trip-rest-db
+    environment:
+      - LOG_LEVEL=${APP_LOG_LEVEL}
+      - JDBC_URL=${APP_MYSQL_JDBC_URL}
+      - JDBC_USER=${MYSQL_USER}
+      - JDBC_PASSWORD=${MYSQL_PASSWORD}
+      - CAR_REST_URL=${APP_CAR_REST_URL}
+    ports:
+      - "8084:8080"
+  trip-rest-db:
+    container_name: trip-rest-db
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_NAME}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - c:/Users/Maxik/IdeaProjects/lesson11/trip-rest/src/main/resources/db/migration:/trip-entrypoint-initdb.d/
+  car-rest-api:
+    container_name: car-rest-api
+    image: car-rest:1.0
+    environment:
+      - JDBC_URL=${APP_POSTGRES_JDBC_URL}
+      - JDBC_USER=${POSTGRES_USER}
+      - JDBC_PASSWORD=${POSTGRES_PASSWORD}
+    restart: always
+    depends_on:
+      - car-rest-db
+    ports:
+      - "8085:8081"
+  car-rest-db:
+    container_name: car-rest-db
+    image: postgres:11
+    environment:
+      - POSTGRES_DB=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 5433:5432
+    volumes:
+      - mysql_data:/var/lib/mysql/data
+      - c:/Users/Maxik/IdeaProjects/lesson11/car-rest/src/main/resources/db/migration:/trip-entrypoint-initdb.d/
+volumes:
+  postgres_data:
+  mysql_data:

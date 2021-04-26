@@ -1,0 +1,5 @@
+CREATE TABLE Trips (
+    id SERIAL PRIMARY KEY,
+    car_id INTEGER NOT NULL,
+    distance INTEGER NOT NULL
+)
