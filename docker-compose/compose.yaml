@@ -28,7 +28,7 @@ services:
       - 3306:3306
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - c:/Users/Maxik/IdeaProjects/lesson11/trip-rest/src/main/resources/db/migration:/trip-entrypoint-initdb.d/
+      - ./../trip-rest/src/main/resources/db/migration:/trip-entrypoint-initdb.d/
   car-rest-api:
     container_name: car-rest-api
     image: car-rest:1.0
@@ -52,7 +52,7 @@ services:
       - 5433:5432
     volumes:
       - mysql_data:/var/lib/mysql/data
-      - c:/Users/Maxik/IdeaProjects/lesson11/car-rest/src/main/resources/db/migration:/trip-entrypoint-initdb.d/
+      - ./../car-rest/src/main/resources/db/migration:/trip-entrypoint-initdb.d/
 volumes:
   postgres_data:
   mysql_data:
