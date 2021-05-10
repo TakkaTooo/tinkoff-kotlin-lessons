@@ -96,7 +96,7 @@ fun Application.tripModule() {
 
 fun DI.Builder.tripComponents() {
     bind<TripDao>() with singleton { TripDao(instance()) }
-    bind<TripService>() with singleton { TripService(instance(), instance()) }
+    bind<TripService>() with singleton { TripService(instance()) }
 }
 
 @Serializable

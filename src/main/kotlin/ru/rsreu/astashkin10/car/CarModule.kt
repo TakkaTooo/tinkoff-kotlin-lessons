@@ -61,7 +61,7 @@ fun Application.carModule() {
 
 fun DI.Builder.carComponents() {
     bind<CarDao>() with singleton { CarDao(instance()) }
-    bind<CarService>() with singleton { CarService(instance(), instance()) }
+    bind<CarService>() with singleton { CarService(instance()) }
 }
 
 @Serializable
